@@ -56,7 +56,7 @@ def update_status_pais():
 
 def create_figure(pais):
     fig = Figure()
-    axis = fig.add_subplot(1,1,1)
+    axis = fig.add_subplot(2,1,1)
     xs = []
     ys = []
     for day in pais:
@@ -75,5 +75,16 @@ def create_figure(pais):
     axis.set_yticks(ys_ticks)
     axis.grid()
     axis.stem(xs,ys,label = "Casos totales por dia")
+    axis = fig.add_subplot(2,1,2)
+    ys_porcentual = []
+    ys_porcentual.append(0.00)
+    for i in range(1,len(ys)):
+        ys_porcentual.append((ys[i]-ys[i-1])/ys[i-1]*100)
+    ys_ticks = [y for y in ys if y < 100]
+    axis.xaxis.set_major_formatter(hfmt)
+    axis.tick_params(axis='both',labelsize='10')
+    axis.set_xticks(xs)
+    axis.set_yticks(ys_ticks)
+    axis.bar(xs,ys_porcentual)
     return fig
 
