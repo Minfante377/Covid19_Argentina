@@ -4,8 +4,7 @@ from app import db
 class Location(db.Model):
     __tablename__ = 'covid19'
 
-    id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String())
+    name = db.Column(db.String(),primary_key = True)
     latitude = db.Column(db.Float,default = 0.0)
     longitude = db.Column(db.Float,default = 0.0)
     situation = db.Column(db.PickleType())
@@ -13,6 +12,6 @@ class Location(db.Model):
         self.name = name
         self.latitude = location[0]
         self.longitude = location[1]
-        self.situation = []
+        self.situation = [(0,0)]
     def __repr__(self):
         return '<id {}>'.format(self.id)

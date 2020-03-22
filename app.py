@@ -20,14 +20,14 @@ from models import Location
 def index():
     status = update_status_provincias()
     for s in status:
-        today = date.today()
         location = db.session.query(Location).filter_by(name = s[0]).first()
         try:
-            location.situation = [today,s[1],s[2]]
+            location.situation = [s[1],s[2]]
         except:
             print("No se encuentra " +s[0]+" en la base de datos")
             continue
         print(location.name)
+        print(location.situation)
         db.session.commit() 
     locations = db.session.query(Location).all()
     markers = update_markers(locations)

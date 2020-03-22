@@ -13,7 +13,7 @@ URL = 'https://es.wikipedia.org/wiki/Pandemia_de_enfermedad_por_coronavirus_de_2
 def update_markers(location):
     markers = []
     for l in location:
-        m = {'icon':icons.alpha.B,'lat':l.latitude,'lng':l.longitude,'infobox':l.name+'\n'+"Casos confirmados:"+str(l.situation[1])+"\n"+"Muertes:"+str(l.situation[2])}
+        m = {'icon':icons.alpha.B,'lat':l.latitude,'lng':l.longitude,'infobox':l.name+'\n'+"Casos confirmados:"+str(l.situation[0])+"\n"+"Muertes:"+str(l.situation[1])}
         markers.append(m)
     return markers
 
@@ -30,6 +30,7 @@ def update_status_provincias():
         if '!' in provincia:
             provincia = provincia[provincia.index('!')+1:]
         provincia = provincia.replace("Provincia de ","")
+        provincia = provincia.replace("Provincia del ","")
         estado_actual = (provincia,casos,muertes)
         status.append(estado_actual)
     return status
