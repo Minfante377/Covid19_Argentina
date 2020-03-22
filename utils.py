@@ -57,8 +57,8 @@ def update_status_pais():
 
 def create_figure(pais):
     fig = Figure()
-    fig.set_figheight(10)
-    fig.set_figwidth(10)
+    fig.set_figheight(9)
+    fig.set_figwidth(9)
     axis = fig.add_subplot(2,1,1)
     xs = []
     ys = []

@@ -20,11 +20,11 @@
 			<h4>{{ error }}</h4>
 			{% endfor %}
 		</div>
-		<div class ='container'>	
+		<div style = "float:left ;margin:10px;align:left">	
 			{% with %}
 
-			{% set location=(-65.7462676,-63.6999338) %}
-			{% set  style="width:800px;height:2500px;align = 'left'"%}
+			{% set location=(-50.7462676,-63.6999338) %}
+			{% set  style="width:800px;height:900px;align = 'left'"%}
 
 			{{
 			googlemap(
@@ -32,14 +32,14 @@
 			location.0, location.1,
 			markers=markers,
 			style=style,
-			zoom = 4.70
+			zoom = 4.2
 			)
 			}}
 
 			{% endwith %}
 		</div>
-		<div class = 'container'>
-			<img src="/plot.png" alt="plot1" style = "align = 'right'">
+		<div style = "margin:10px;align:right">
+			<img src="/plot.png" alt="plot1">
 		</div>
 		<script src="//code.jquery.com/jquery-2.2.1.min.js"></script>
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
