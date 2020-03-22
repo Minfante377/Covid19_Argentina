@@ -12,6 +12,6 @@ class Location(db.Model):
         self.name = name
         self.latitude = location[0]
         self.longitude = location[1]
-        self.situation = [(0,0)]
+        self.situation = ['0','0']
     def __repr__(self):
         return '<id {}>'.format(self.id)
