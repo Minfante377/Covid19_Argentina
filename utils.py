@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 from matplotlib.figure import Figure
 from matplotlib import dates
+from matplotlib.ticker import MultipleLocator
 import datetime
 import numpy as np
 
@@ -56,6 +57,8 @@ def update_status_pais():
 
 def create_figure(pais):
     fig = Figure()
+    fig.set_figheight(10)
+    fig.set_figwidth(10)
     axis = fig.add_subplot(2,1,1)
     xs = []
     ys = []
@@ -71,9 +74,11 @@ def create_figure(pais):
     axis.xaxis.set_major_formatter(hfmt)
     axis.tick_params(axis='both',labelsize='10')
     axis.set_xticks(xs)
-    ys_ticks = [y for y in ys if y > 31]
+    ys_ticks = [y for y in ys if y > 0]
     axis.set_yticks(ys_ticks)
     axis.grid()
+    axis.yaxis.set_major_locator(MultipleLocator(10.0))
+    axis.title.set_text("Evolucion del total de casos")
     axis.stem(xs,ys,label = "Casos totales por dia")
     axis = fig.add_subplot(2,1,2)
     ys_porcentual = []
@@ -85,6 +90,9 @@ def create_figure(pais):
     axis.tick_params(axis='both',labelsize='10')
     axis.set_xticks(xs)
     axis.set_yticks(ys_ticks)
+    axis.grid(axis = "y")
+    axis.yaxis.set_major_locator(MultipleLocator(25.0))
+    axis.title.set_text("Aumento porcentual de casos respecto al dia anterior")
     axis.bar(xs,ys_porcentual)
     return fig
 
