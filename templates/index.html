@@ -20,8 +20,8 @@
 			<h4>{{ error }}</h4>
 			{% endfor %}
 		</div>
-		
-		{% with %}
+		<div class ='container'>	
+			{% with %}
 
 			{% set location=(-65.7462676,-63.6999338) %}
 			{% set  style="width:800px;height:2500px;align = 'left'"%}
@@ -36,8 +36,11 @@
 			)
 			}}
 
-		{% endwith %}
-
+			{% endwith %}
+		</div>
+		<div class = 'container'>
+			<img src="/plot.png" alt="plot1" style = "align = 'right'">
+		</div>
 		<script src="//code.jquery.com/jquery-2.2.1.min.js"></script>
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	</body>

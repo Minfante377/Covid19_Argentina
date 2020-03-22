@@ -2,6 +2,11 @@ from flask_googlemaps import icons
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
+from matplotlib.figure import Figure
+from matplotlib import dates
+import datetime
+import numpy as np
+
 URL = 'https://es.wikipedia.org/wiki/Pandemia_de_enfermedad_por_coronavirus_de_2020_en_Argentina'
 
 def update_markers(location):
@@ -48,4 +53,27 @@ def update_status_pais():
         pais.append((fechas,casos))
     print (pais)
     return pais
+
+def create_figure(pais):
+    fig = Figure()
+    axis = fig.add_subplot(1,1,1)
+    xs = []
+    ys = []
+    for day in pais:
+        if not day[0] or day[0] == "⋮":
+            continue
+        fecha = datetime.datetime.strptime(day[0],'%d-%m-%Y')
+        casos = day[1]
+        xs.append(fecha)
+        ys.append(int(casos))
+    xs = dates.date2num(xs)
+    hfmt = dates.DateFormatter('%d\n%m')
+    axis.xaxis.set_major_formatter(hfmt)
+    axis.tick_params(axis='both',labelsize='10')
+    axis.set_xticks(xs)
+    ys_ticks = [y for y in ys if y > 31]
+    axis.set_yticks(ys_ticks)
+    axis.grid()
+    axis.stem(xs,ys,label = "Casos totales por dia")
+    return fig
 
