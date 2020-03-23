@@ -1,19 +1,18 @@
 from flask_googlemaps import icons
 import requests
 from bs4 import BeautifulSoup
-import pandas as pd
 from matplotlib.figure import Figure
 from matplotlib import dates
 from matplotlib.ticker import MultipleLocator
 import datetime
-import numpy as np
 
 URL = 'https://es.wikipedia.org/wiki/Pandemia_de_enfermedad_por_coronavirus_de_2020_en_Argentina'
 
 def update_markers(location):
     markers = []
     for l in location:
-        m = {'icon':icons.alpha.B,'lat':l.latitude,'lng':l.longitude,'infobox':l.name+'\n'+"Casos confirmados:"+str(l.situation[0])+"\n"+"Muertes:"+str(l.situation[1])}
+        print(l.situation)
+        m = {'icon':icons.alpha.B,'lat':l.latitude,'lng':l.longitude,'infobox':l.name+'\n'+" - Casos confirmados:"+str(l.situation[0])+"\n"+" - Muertes:"+str(l.situation[1])}
         markers.append(m)
     return markers
 
