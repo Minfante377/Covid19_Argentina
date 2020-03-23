@@ -6,6 +6,20 @@ Toda la informacion se toma automaticamente de https://es.wikipedia.org/wiki/Pan
  La lista de modulos requeridos se encuentra en requirements.txt:
 #Uso
 - Debe crearse una base de datos con una tabla llamada covid19
+	
+	paso 1: instalar PostgreSQL:
+		
+		sudo apt update
+		sudo apt install postgresql postgresql-contrib
+	
+	paso 2: crear un nuevo rol para tu usuario:
+		
+		sudo -u postgres createuser --interactive
+
+	paso 3: crear una nueva base de datos
+		
+		sudo -u nombre_de_usuario createdb covid19
+
 - Correr el script init_db.py:
 
 	python3 init_db.py
