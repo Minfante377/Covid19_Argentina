@@ -7,8 +7,12 @@ Toda la informacion se toma automaticamente de https://es.wikipedia.org/wiki/Pan
 #Uso
 - Debe crearse una base de datos con una tabla llamada covid19
 - Correr el script init_db.py:
+
 	python3 init_db.py
+	
   El mismo creara todas las provincias con sus marcadores para ubicar en el mapa
 - Correr la aplicacion web:
+
 	python3 manage.py runserver
+	
   La misma podra visualizarse en http://127.0.0.1:5000/
