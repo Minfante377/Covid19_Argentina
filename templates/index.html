@@ -23,24 +23,11 @@
 			<h4>{{ error }}</h4>
 			{% endfor %}
 		</div>
-		<div style = "float:left ;margin:10px;align:left;border:2px black solid">	
-			{% with %}
-
-			{% set location=(-50.7462676,-63.6999338) %}
-			{% set  style="width:800px;height:900px;align = 'left'"%}
-
-			{{
-			googlemap(
-			"simple-map",
-			location.0, location.1,
-			markers=markers,
-			style=style,
-			zoom = 4.2
-			)
-			}}
-
-			{% endwith %}
-		</div>
+		<div style ="width:800px;height:900px;margin:10px;float:left;border:2px black solid">
+			{% block body %}
+				{%include "map.html"%}
+			{% endblock %}
+		</div>	
 		<div class = 'bokeh' style = "float:left;margin:10px;align:right;border:2px black solid">
 			{{div_dot|safe}}
 			{{div_bar|safe}}

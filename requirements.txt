@@ -1,7 +1,6 @@
 autoenv==1.0.0
 beautifulsoup4==4.8.2
 Flask==1.1.1
-flask-googlemaps==0.4.0
 Flask-Migrate==2.5.3
 Flask-Script==2.0.6
 Flask-SQLAlchemy==2.4.1
@@ -9,3 +8,4 @@ lxml==4.5.0
 requests==2.22.0
 psycopg2-binary==2.8.4
 bokeh==2.0.0
+folium==0.10.1

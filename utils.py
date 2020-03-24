@@ -3,14 +3,19 @@ import requests
 from bs4 import BeautifulSoup
 import datetime
 from bokeh.plotting import figure
+import folium
+from app import db
+from models import Location
 
 URL = 'https://es.wikipedia.org/wiki/Pandemia_de_enfermedad_por_coronavirus_de_2020_en_Argentina'
+start_coords = (-50.7462676,-63.6999338)
+start_zoom = 4.2
 
 def update_markers(location):
     markers = []
     for l in location:
         print(l.situation)
-        m = {'icon':icons.alpha.B,'lat':l.latitude,'lng':l.longitude,'infobox':l.name+'\n'+" - Casos confirmados:"+str(l.situation[0])+"\n"+" - Muertes:"+str(l.situation[1])}
+        m = {'icon':icons.alpha.B,'lat':l.latitude,'lng':l.longitude,'infobox':l.name+" - Casos confirmados:"+str(l.situation[0])+" - Muertes:"+str(l.situation[1])}
         markers.append(m)
     return markers
 
@@ -90,3 +95,20 @@ def create_figure_bar(pais):
     p.y_range.start = 0
     return p
 
+def create_map():
+    status = update_status_provincias()
+    for s in status:
+        location = db.session.query(Location).filter_by(name = s[0]).first()
+        try:
+            location.situation = [s[1],s[2]]
+        except:
+            print("No se encuentra " +s[0]+" en la base de datos")
+            continue
+        db.session.commit() 
+    locations = db.session.query(Location).all()
+    markers = update_markers(locations)
+    folium_map = folium.Map(location=start_coords,zoom_start = start_zoom)
+    for marker in markers:
+        popup = folium.Popup(marker['infobox'],max_width = 500)
+        folium.Marker((marker['lat'],marker['lng']),popup = popup).add_to(folium_map)
+    return folium_map
