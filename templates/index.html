@@ -11,7 +11,10 @@
 	max-width: 1000px;
 }
 		</style>
-
+		<script type="text/javascript" src="http://cdn.bokeh.org/bokeh/release/bokeh-2.0.0.min.js"></script>
+			{{script_dot|safe}}
+		<script type="text/javascript" src="http://cdn.bokeh.org/bokeh/release/bokeh-2.0.0.min.js"></script>
+			{{script_bar|safe}}
 	</head>
 	<body>
 		<div class="container">
@@ -38,8 +41,9 @@
 
 			{% endwith %}
 		</div>
-		<div style = "margin:10px;align:right;border:2px black solid">
-			<img src="/plot.png" alt="plot1">
+		<div class = 'bokeh' style = "float:left;margin:10px;align:right;border:2px black solid">
+			{{div_dot|safe}}
+			{{div_bar|safe}}
 		</div>
 		<script src="//code.jquery.com/jquery-2.2.1.min.js"></script>
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>

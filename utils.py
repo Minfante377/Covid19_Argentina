@@ -1,10 +1,8 @@
 from flask_googlemaps import icons
 import requests
 from bs4 import BeautifulSoup
-from matplotlib.figure import Figure
-from matplotlib import dates
-from matplotlib.ticker import MultipleLocator
 import datetime
+from bokeh.plotting import figure
 
 URL = 'https://es.wikipedia.org/wiki/Pandemia_de_enfermedad_por_coronavirus_de_2020_en_Argentina'
 
@@ -55,11 +53,7 @@ def update_status_pais():
     print (pais)
     return pais
 
-def create_figure(pais):
-    fig = Figure()
-    fig.set_figheight(9)
-    fig.set_figwidth(9)
-    axis = fig.add_subplot(2,1,1)
+def create_figure_dot(pais):
     xs = []
     ys = []
     for day in pais:
@@ -69,30 +63,30 @@ def create_figure(pais):
         casos = day[1]
         xs.append(fecha)
         ys.append(int(casos))
-    xs = dates.date2num(xs)
-    hfmt = dates.DateFormatter('%d\n%m')
-    axis.xaxis.set_major_formatter(hfmt)
-    axis.tick_params(axis='both',labelsize='10')
-    axis.set_xticks(xs)
-    ys_ticks = [y for y in ys if y > 0]
-    axis.set_yticks(ys_ticks)
-    axis.grid()
-    axis.yaxis.set_major_locator(MultipleLocator(10.0))
-    axis.title.set_text("Evolucion del total de casos")
-    axis.stem(xs,ys,label = "Casos totales por dia")
-    axis = fig.add_subplot(2,1,2)
+    p = figure(x_axis_type='datetime',title = "Evolucion del total de casos",width = 600,height = 450)
+    p.axis.axis_label = 'Fecha'
+    p.yaxis.axis_label = 'Numero de casos'
+    p.circle(xs,ys,size = 5, color = 'navy')
+    return p
+
+def create_figure_bar(pais):
+    xs = []
+    ys = []
+    for day in pais:
+        if not day[0] or day[0] == "⋮":
+            continue
+        fecha = datetime.datetime.strptime(day[0],'%d-%m-%Y')
+        casos = day[1]
+        xs.append(fecha)
+        ys.append(int(casos))
     ys_porcentual = []
     ys_porcentual.append(0.00)
     for i in range(1,len(ys)):
         ys_porcentual.append((ys[i]-ys[i-1])/ys[i-1]*100)
-    ys_ticks = [y for y in ys if y < 100]
-    axis.xaxis.set_major_formatter(hfmt)
-    axis.tick_params(axis='both',labelsize='10')
-    axis.set_xticks(xs)
-    axis.set_yticks(ys_ticks)
-    axis.grid(axis = "y")
-    axis.yaxis.set_major_locator(MultipleLocator(25.0))
-    axis.title.set_text("Aumento porcentual de casos respecto al dia anterior")
-    axis.bar(xs,ys_porcentual)
-    return fig
+    p = figure(x_axis_type='datetime',y_axis_type = 'linear',title = "Aumento porcentual respecto al dia anterior",width = 600,height = 450)
+    p.axis.axis_label = 'Fecha'
+    p.yaxis.axis_label = '%'
+    p.vbar(x = xs,top = ys_porcentual,width = 0.8,line_width = 10, fill_color = 'navy')
+    p.y_range.start = 0
+    return p
 
