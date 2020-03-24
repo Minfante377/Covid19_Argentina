@@ -30,3 +30,6 @@ Toda la informacion se toma automaticamente de https://es.wikipedia.org/wiki/Pan
 	python3 manage.py runserver
 	
   La misma podra visualizarse en http://127.0.0.1:5000/
+
+- En el archivo .env se pueden visualizar los export necesarios de las variables de entorno que utiliza el programa.
+  Al entrar a la carpeta pricipal del mismo, dichos export se ejecutaran automaticamente
