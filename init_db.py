@@ -1,6 +1,8 @@
 from app import db
 from models import Location
 
+Location.query.delete()
+db.session.commit()
 l = Location("Buenos Aires",(-36.241903,-60.479196))
 db.session.add(l)
 db.session.commit()
@@ -55,7 +57,7 @@ db.session.commit()
 l = Location("Chubut",(-43.527495,-68.769115))
 db.session.add(l)
 db.session.commit()
-l = Location("Catamarca",(28.630643,65.667771))
+l = Location("Catamarca",(-28.630643,-65.667771))
 db.session.add(l)
 db.session.commit()
 l = Location("San Juan",(-30.935416,-68.685047))
