@@ -6,7 +6,8 @@ from bokeh.embed import components
 from geopy.geocoders import GoogleV3
 
 app = Flask(__name__)
-app.config.from_object(os.environ['APP_SETTINGS'])
+APP_SETTINGS="config.DevelopmentConfig"
+app.config.from_object(APP_SETTINGS)
 
 from utils import update_markers,create_map,update_status_pais,create_figure_dot,create_figure_bar
 
