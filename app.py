@@ -4,7 +4,6 @@ import os
 import io
 from datetime import date
 from bokeh.embed import components
-from geopy.geocoders import GoogleV3
 
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])

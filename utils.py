@@ -1,4 +1,3 @@
-from flask_googlemaps import icons
 import requests
 from bs4 import BeautifulSoup
 import datetime
@@ -15,7 +14,7 @@ def update_markers(location):
     markers = []
     for l in location:
         print(l.situation)
-        m = {'icon':icons.alpha.B,'lat':l.latitude,'lng':l.longitude,'infobox':l.name+" - Casos confirmados:"+str(l.situation[0])+" - Muertes:"+str(l.situation[1])}
+        m = {'lat':l.latitude,'lng':l.longitude,'infobox':l.name+" - Casos confirmados:"+str(l.situation[0])+" - Muertes:"+str(l.situation[1])}
         markers.append(m)
     return markers
 
