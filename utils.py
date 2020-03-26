@@ -14,7 +14,7 @@ def update_markers(location):
     markers = []
     for l in location:
         print(l)
-        m = {'icon':icons.alpha.B,'lat':l[1][0],'lng':l[1][1],'infobox':l[0]+" - Casos confirmados:"+str(l[2][0])+" - Muertes:"+str(l[2][1])}
+        m = {'lat':l[1][0],'lng':l[1][1],'infobox':l[0]+" - Casos confirmados:"+str(l[2][0])+" - Muertes:"+str(l[2][1])}
         markers.append(m)
     return markers
 
