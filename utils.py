@@ -4,8 +4,7 @@ from bs4 import BeautifulSoup
 import datetime
 from bokeh.plotting import figure
 import folium
-from app import db
-from models import Location
+from init_db import init_db
 
 URL = 'https://es.wikipedia.org/wiki/Pandemia_de_enfermedad_por_coronavirus_de_2020_en_Argentina'
 start_coords = (-50.7462676,-63.6999338)
@@ -14,8 +13,8 @@ start_zoom = 4.2
 def update_markers(location):
     markers = []
     for l in location:
-        print(l.situation)
-        m = {'icon':icons.alpha.B,'lat':l.latitude,'lng':l.longitude,'infobox':l.name+" - Casos confirmados:"+str(l.situation[0])+" - Muertes:"+str(l.situation[1])}
+        print(l)
+        m = {'icon':icons.alpha.B,'lat':l[1][0],'lng':l[1][1],'infobox':l[0]+" - Casos confirmados:"+str(l[2][0])+" - Muertes:"+str(l[2][1])}
         markers.append(m)
     return markers
 
@@ -97,15 +96,15 @@ def create_figure_bar(pais):
 
 def create_map():
     status = update_status_provincias()
+    locations = init_db()
     for s in status:
-        location = db.session.query(Location).filter_by(name = s[0]).first()
-        try:
-            location.situation = [s[1],s[2]]
-        except:
-            print("No se encuentra " +s[0]+" en la base de datos")
-            continue
-        db.session.commit() 
-    locations = db.session.query(Location).all()
+        for location in locations:
+            if s[0] == location[0]:
+                try:
+                    location[2] = (s[1],s[2])
+                except:
+                    print("No se encuentra " +s[0]+" en la base de datos")
+                    continue
     markers = update_markers(locations)
     folium_map = folium.Map(location=start_coords,zoom_start = start_zoom)
     for marker in markers:

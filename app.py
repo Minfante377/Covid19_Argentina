@@ -1,5 +1,4 @@
 from flask import Flask,render_template,Response
-from flask_sqlalchemy import SQLAlchemy
 import os
 import io
 from datetime import date
@@ -8,10 +7,7 @@ from geopy.geocoders import GoogleV3
 
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-db = SQLAlchemy(app)
 
-from models import Location
 from utils import update_markers,create_map,update_status_pais,create_figure_dot,create_figure_bar
 
 @app.route('/',methods=['GET', 'POST'])
