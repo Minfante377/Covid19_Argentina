@@ -1,4 +1,3 @@
-from flask_googlemaps import icons
 import requests
 from bs4 import BeautifulSoup
 import datetime
@@ -67,7 +66,7 @@ def create_figure_dot(pais):
         casos = day[1]
         xs.append(fecha)
         ys.append(int(casos))
-    p = figure(x_axis_type='datetime',title = "Evolucion del total de casos",width = 600,height = 450)
+    p = figure(sizing_mode = "scale_both",x_axis_type='datetime',title = "Evolucion del total de casos",width = 600,height = 450)
     p.axis.axis_label = 'Fecha'
     p.yaxis.axis_label = 'Numero de casos'
     p.circle(xs,ys,size = 5, color = 'navy')
@@ -87,7 +86,7 @@ def create_figure_bar(pais):
     ys_porcentual.append(0.00)
     for i in range(1,len(ys)):
         ys_porcentual.append((ys[i]-ys[i-1])/ys[i-1]*100)
-    p = figure(x_axis_type='datetime',y_axis_type = 'linear',title = "Aumento porcentual respecto al dia anterior",width = 600,height = 450)
+    p = figure(sizing_mode = 'scale_both',x_axis_type='datetime',y_axis_type = 'linear',title = "Aumento porcentual respecto al dia anterior",width = 600,height = 450)
     p.axis.axis_label = 'Fecha'
     p.yaxis.axis_label = '%'
     p.vbar(x = xs,top = ys_porcentual,width = 0.8,line_width = 10, fill_color = 'navy')

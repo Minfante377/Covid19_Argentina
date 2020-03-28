@@ -11,9 +11,9 @@
 	max-width: 1000px;
 }
 		</style>
-		<script type="text/javascript" src="http://cdn.bokeh.org/bokeh/release/bokeh-2.0.0.min.js"></script>
+		<script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-2.0.0.min.js"></script>
 			{{script_dot|safe}}
-		<script type="text/javascript" src="http://cdn.bokeh.org/bokeh/release/bokeh-2.0.0.min.js"></script>
+		<script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-2.0.0.min.js"></script>
 			{{script_bar|safe}}
 	</head>
 	<body>
@@ -23,12 +23,12 @@
 			<h4>{{ error }}</h4>
 			{% endfor %}
 		</div>
-		<div style ="width:800px;height:900px;margin:10px;float:left;border:2px black solid">
+		<div style ="width:40%;height:66.8vw;margin:10px;float:left;border:2px black solid">
 			{% block body %}
 				{%include "map.html"%}
 			{% endblock %}
 		</div>	
-		<div class = 'bokeh' style = "float:left;margin:10px;align:right;border:2px black solid">
+		<div class = 'bokeh' style = "width:45%;height:48vw%;float:left;margin:10px;align:right;border:2px black solid">
 			{{div_dot|safe}}
 			{{div_bar|safe}}
 		</div>
