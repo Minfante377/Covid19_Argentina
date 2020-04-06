@@ -1537,7 +1537,6 @@ if __name__ == '__main__':
             self.layout.add_widget(self.graficas_box)
             self.refresh_box = BoxLayout(orientation="horizontal",size_hint = (1,0.1))
             self.refresh_button = Button(text="Actualizar",size_hint_x = 0.2)
-            self.last_update = Label(text = "Actualizado:",size_hint_x = 0.8)
             self.refresh_button.bind(on_press=partial(self.refresh_on_click,self.refresh_button))
             self.refresh_box.add_widget(self.last_update)
             self.refresh_box.add_widget(self.refresh_button)
@@ -1571,7 +1570,7 @@ if __name__ == '__main__':
             self.muertes_label = Label(text="Muertes:")
             self.dropdown = DropDown()
             for i in range (len(self.provincias)):
-                btn = Button(text = str(self.provincias[i][0]),height=30,size_hint_y=None)
+                btn = Button(text = str(self.provincias[i][0]),height=60,size_hint_y=None)
                 btn.bind(on_release=lambda btn:self.dropdown.select(btn.text))
                 self.dropdown.add_widget(btn)
      
@@ -1579,8 +1578,12 @@ if __name__ == '__main__':
             response = requests.get(url)
             response = json.loads(response.text)
             self.pais = response["pais"]
-            self.provincias = response["provincias"] 
-
+            self.provincias = response["provincias"]
+            self.provincias.sort(key = lambda x: x[0])
+            ts = datetime.now() 
+            self.last_update = Label(text = "Actualizado:",size_hint_x = 0.8)
+            self.last_update.text = "Ultima actualizacion: "+str(ts)[:-10]
+            
         def refresh_on_click(self,instance,*args):
             ts = datetime.now() 
             self.last_update.text = "Ultima actualizacion: "+str(ts)[:-10]
