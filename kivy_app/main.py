@@ -1585,7 +1585,12 @@ if __name__ == '__main__':
             ts = datetime.now() 
             self.last_update.text = "Ultima actualizacion: "+str(ts)[:-10]
             self.refresh()
-            #self.draw_graph()
+            points = self.draw_graph()
+            casos_graph = Graph (xlabel = "Dias transcurridos", ylabel = "Casos confirmados", x_ticks_minor = 1, x_ticks_major = 5, y_ticks_minor = 20, y_ticks_major = 100,x_grid_label = True, y_grid_label = True, x_grid = True, y_grid = True, xmin = 0, xmax = self.i-2, ymin = 0 , ymax = self.max_y)
+            plot = LinePlot( color = [1,1,1,1])
+            plot.line_width = 2
+            plot.points = points
+            casos_graph.add_plot(plot)
 
     CovidApp().run()
 
