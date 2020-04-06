@@ -1594,6 +1594,9 @@ if __name__ == '__main__':
             plot.line_width = 2
             plot.points = points
             casos_graph.add_plot(plot)
+        
+        def on_pause(self):
+            return True
 
     CovidApp().run()
 
