@@ -21,7 +21,7 @@ def update_status_provincias():
     status = []
     response = requests.get(URL).text
     soup = BeautifulSoup(response,'lxml')
-    table = soup.find('table',{'class':'wikitable sortable col2der col3der col4der col5der col6der'})
+    table = soup.find('table',{'class':'wikitable sortable col2der col3der col4der col5der col6der col7der'})
     for tr in table.find_all('tr'):
         tds = tr.find_all('td')
         if not tds:
