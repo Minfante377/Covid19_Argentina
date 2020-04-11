@@ -1574,8 +1574,8 @@ if __name__ == '__main__':
             y_ticks_minor = 25
             y_min = 0.1
             if option == "Casos confirmados":
-                y_ticks_major = 100
-                y_ticks_minor = 25
+                y_ticks_major = 200
+                y_ticks_minor = 50
                 y_min = 0
                 for p in self.pais:
                     if p[0] == None or p[0] == "⋮":
