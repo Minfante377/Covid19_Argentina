@@ -1499,24 +1499,24 @@ if __name__ == '__main__':
     import json
     import sys
     url = "https://martininfante377.pythonanywhere.com/refresh"
-
+    opciones = ['Casos confirmados','Incremento porcentual']
+    casos_graph = None
+    option_select = "Casos confirmados"
+    plot = None
     class CovidApp(App):
 
         def build(self):
+            global casos_graph
+            casos_graph = Graph (xlabel = "Dias transcurridos", x_ticks_minor = 1, x_ticks_major = 5,x_grid_label = True, y_grid_label = True, x_grid = True, y_grid = True, xmin = 0)
             self.refresh()
             self.refresh_dropdown()
-            points = self.draw_graph()
-            casos_graph = Graph (xlabel = "Dias transcurridos", ylabel = "Casos confirmados", x_ticks_minor = 1, x_ticks_major = 5, y_ticks_minor = 20, y_ticks_major = 100,x_grid_label = True, y_grid_label = True, x_grid = True, y_grid = True, xmin = 0, xmax = self.i-2, ymin = 0 , ymax = self.max_y)
-            plot = LinePlot( color = [1,1,1,1])
-            plot.line_width = 2
-            plot.points = points
-            casos_graph.add_plot(plot)
+            self.draw_graph("Casos confirmados")
             Window.clearcolor = (103/255,91/255,93/255,1)
             self.root = FloatLayout()
             self.layout = BoxLayout(orientation="vertical")
             self.title_box = BoxLayout(orientation = "horizontal",size_hint=(1.0,0.1))
             #self.header = Label(text ='[u][b]Argentina COVID-19[/b][/u]',font_size = 30,markup = True)
-            self.mainbutton = Button(text="Provincias...",size_hint = (1.0,1.0))
+            self.mainbutton = Button(text="Provincias",size_hint = (1.0,1.0))
             self.mainbutton.bind(on_release=self.dropdown.open)
             self.dropdown.bind(on_select=lambda instance, x:setattr(self.mainbutton,'text',x))
             self.dropdown.bind(on_select=lambda instance,x:self.update_labels(x))
@@ -1525,6 +1525,16 @@ if __name__ == '__main__':
             self.layout.add_widget(self.title_box)
             self.graficas_box = BoxLayout(orientation="horizontal")
             self.pais_box = BoxLayout(orientation="vertical")
+            self.dropdown_graph = DropDown()
+            for i in range (len(opciones)):
+                btn = Button(text = str(opciones[i]),height=60,size_hint_y=None)
+                btn.bind(on_release=lambda btn:self.dropdown_graph.select(btn.text))
+                self.dropdown_graph.add_widget(btn)
+            self.mainbutton_graph = Button(text = "Graficos",size_hint = (1.0,0.1))
+            self.mainbutton_graph.bind(on_release = self.dropdown_graph.open)
+            self.dropdown_graph.bind(on_select=lambda instance, x:setattr(self.mainbutton_graph,'text',x))
+            self.dropdown_graph.bind(on_select=lambda instance,x:self.draw_graph(x))
+            self.pais_box.add_widget(self.mainbutton_graph)
             self.pais_box.add_widget(casos_graph)
             self.graficas_box.add_widget(self.pais_box)
             self.provincias_box = BoxLayout(orientation="horizontal",size_hint_y = 0.1)
@@ -1550,21 +1560,71 @@ if __name__ == '__main__':
                     self.casos_label.text = "Casos: "+str(provincia[2][0])
                     self.muertes_label.text = "Muertes: "+str(provincia[2][1])
 
-        def draw_graph(self):
+        def draw_graph(self,option):
+            global casos_graph
+            global option_select
+            global plot
+            casos_graph.remove_plot(plot)
+            casos_graph._clear_buffer()
+            option_select = option
             points = []
             self.i = 0
             self.max_y = 0
-            for p in self.pais:
-                if p[0] == None or p[0] == "⋮":
-                    continue
-                self.xs = self.i
-                self.i = self.i+1
-                self.ys = int(p[1])
-                if self.ys > self.max_y:
-                    self.max_y = self.ys
-                points.append((self.xs,self.ys))
-            return points
-
+            y_ticks_major = 100
+            y_ticks_minor = 25
+            y_min = 0.1
+            if option == "Casos confirmados":
+                y_ticks_major = 100
+                y_ticks_minor = 25
+                y_min = 0
+                for p in self.pais:
+                    if p[0] == None or p[0] == "⋮":
+                        continue
+                    self.xs = self.i
+                    self.i = self.i+1
+                    self.ys = int(p[1])
+                    if self.ys > self.max_y:
+                        self.max_y = self.ys
+                    points.append((self.xs,self.ys))
+                plot = LinePlot( color = [1,1,1,1])
+                plot.line_width = 2
+            if option == "Incremento porcentual":
+                self.i = 0
+                cases_t0 = 0
+                y_ticks_major = 25
+                y_ticks_minor = 1
+                y_min = 0
+                for p in self.pais:
+                    if p[0] == None or p[0] == "⋮":
+                        continue
+                    if self.i == 0:
+                        cases_t0 = int(p[1])
+                        self.xs = self.i
+                        self.ys = 0.1
+                        self.i = self.i + 1
+                        points.append((self.xs,self.ys))
+                        continue
+                    self.xs = self.i
+                    self.i = self.i+1
+                    if cases_t0 > 0:
+                        self.ys = (int(p[1]) - cases_t0)/cases_t0 * 100
+                    else:
+                        self.ys = 0
+                    cases_t0 = int(p[1])
+                    if self.ys > self.max_y:
+                        self.max_y = self.ys
+                    points.append((self.xs,self.ys))
+                plot = BarPlot( color = [1,1,1,1])
+                plot.bar_width = 5
+            casos_graph.xmax = self.i-2 
+            casos_graph.ymin = y_min 
+            casos_graph.ymax = self.max_y
+            casos_graph.ylabel = option
+            casos_graph.y_ticks_minor = y_ticks_minor
+            casos_graph.y_ticks_major = y_ticks_major
+            plot.points = points
+            casos_graph.add_plot(plot)
+        
         def refresh_dropdown(self):
             self.casos_label = Label(text="Casos confirmados:")
             self.muertes_label = Label(text="Muertes:")
@@ -1585,15 +1645,11 @@ if __name__ == '__main__':
             self.last_update.text = "Ultima actualizacion: "+str(ts)[:-10]
             
         def refresh_on_click(self,instance,*args):
+            global casos_graph
             ts = datetime.now() 
             self.last_update.text = "Ultima actualizacion: "+str(ts)[:-10]
             self.refresh()
-            points = self.draw_graph()
-            casos_graph = Graph (xlabel = "Dias transcurridos", ylabel = "Casos confirmados", x_ticks_minor = 1, x_ticks_major = 5, y_ticks_minor = 20, y_ticks_major = 100,x_grid_label = True, y_grid_label = True, x_grid = True, y_grid = True, xmin = 0, xmax = self.i-2, ymin = 0 , ymax = self.max_y)
-            plot = LinePlot( color = [1,1,1,1])
-            plot.line_width = 2
-            plot.points = points
-            casos_graph.add_plot(plot)
+            self.draw_graph(option_select)
         
         def on_pause(self):
             return True
