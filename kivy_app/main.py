@@ -1570,12 +1570,10 @@ if __name__ == '__main__':
             points = []
             self.i = 0
             self.max_y = 0
-            y_ticks_major = 100
-            y_ticks_minor = 25
+            y_ticks_major = 200
+            y_ticks_minor = 50
             y_min = 0.1
             if option == "Casos confirmados":
-                y_ticks_major = 200
-                y_ticks_minor = 50
                 y_min = 0
                 for p in self.pais:
                     if p[0] == None or p[0] == "⋮":
@@ -1585,6 +1583,8 @@ if __name__ == '__main__':
                     self.ys = int(p[1])
                     if self.ys > self.max_y:
                         self.max_y = self.ys
+                    y_ticks_major = int(self.max_y/15)
+                    y_ticks_minor = int(y_ticks_major / 4)
                     points.append((self.xs,self.ys))
                 plot = LinePlot( color = [1,1,1,1])
                 plot.line_width = 2
