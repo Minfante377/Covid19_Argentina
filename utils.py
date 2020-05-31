@@ -64,6 +64,8 @@ def create_figure_dot(pais):
             continue
         fecha = datetime.datetime.strptime(day[0],'%d-%m-%Y')
         casos = day[1]
+        casos = ''.join(ch for ch in casos if ch.isdigit())
+        print(casos)
         xs.append(fecha)
         ys.append(int(casos))
     p = figure(sizing_mode = "scale_both",x_axis_type='datetime',title = "Evolucion del total de casos",width = 600,height = 450)
@@ -80,6 +82,7 @@ def create_figure_bar(pais):
             continue
         fecha = datetime.datetime.strptime(day[0],'%d-%m-%Y')
         casos = day[1]
+        casos = ''.join(ch for ch in casos if ch.isdigit())
         xs.append(fecha)
         ys.append(int(casos))
     ys_porcentual = []
